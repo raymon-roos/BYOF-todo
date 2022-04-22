@@ -26,6 +26,7 @@ fabric.properties
 *.tar.gz
 *.rar
 hs_err_pid*
+/vendor
 /vendor/*
 /tmp/cache/models/*
 !/tmp/cache/models/empty

@@ -1,0 +1,12 @@
+{
+    "require": {
+        "twig/twig": "3.*",
+        "gabordemooij/redbean": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "controller\\": "src/controllers/",
+            "service\\": "src/services/"
+        }
+    }
+}
