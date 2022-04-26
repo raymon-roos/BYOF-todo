@@ -1,0 +1,15 @@
+@use "variables";
+
+.header {
+    background-color: variables.$dark-blue;
+    .navbar {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        .navmenu {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+    }
+}

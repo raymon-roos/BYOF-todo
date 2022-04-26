@@ -1,0 +1,40 @@
+@use "variables";
+
+.login {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+
+    margin: auto;
+    margin-top: 15vh;
+    width: 400px;
+
+    background-color: variables.$slate;
+    opacity: 80%;
+    border-radius: 8px;
+    
+    * {
+        opacity: 1;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 8px;
+        opacity: 1;
+        
+        input {
+            margin: 7px;
+            border: none;
+            width: auto;
+            border-radius: 14px;
+            text-align: center;
+        }
+    }
+}
+
+
