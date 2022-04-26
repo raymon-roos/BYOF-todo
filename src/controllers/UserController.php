@@ -36,15 +36,12 @@ class UserController
                     exit();
                 } else {
                     $_SESSION['errorMessage'] = 'Incorrect username or password';
-                    $this->GETLogin();
                 }
             } else {
                 $_SESSION['errorMessage'] = 'Missing username or password';
-                $this->GETLogin();
             }
-        } else {
-            $this->GETLogin();
         }
+            $this->GETLogin();
     }
 
     public function GETLogout()
