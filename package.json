@@ -4,7 +4,7 @@
   "description": "Bit Academy Jarvis build-your-own-framework module, level 3 exercise 1 what-to-do.",
   "main": "index.js",
   "scripts": {
-    "sass": "./node_modules/.bin/sass src/style.scss dist/style.css",
+    "sass": "./node_modules/.bin/sass --watch src/scss:dist/css --style expanded",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
