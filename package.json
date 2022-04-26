@@ -1,0 +1,30 @@
+{
+  "name": "to-do-bit-acad",
+  "version": "1.0.0",
+  "description": "Bit Academy Jarvis build-your-own-framework module, level 3 exercise 1 what-to-do.",
+  "main": "index.js",
+  "scripts": {
+    "sass": "./node_modules/.bin/sass src/style.scss dist/style.css",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@bitlab.bit-academy.nl:22bbbac2-0a38-11ec-a943-4213e7ee7fac/6c880ddd-0a38-11ec-a943-4213e7ee7fac/What-To-Do-be2c3478-18da4244.git"
+  },
+  "keywords": [
+    "Bit-Academy",
+    "build-your-own-framework",
+    "jarvis",
+    "to-do",
+    "sass",
+    "composer",
+    "twig",
+    "redbean",
+    "npm"
+  ],
+  "author": "Raymon Roos",
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "sass": "^1.50.1"
+  }
+}
