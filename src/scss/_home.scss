@@ -1,0 +1,14 @@
+@use "variables";
+
+.home {
+    margin: auto;
+    margin-top: 15vh;
+    width: 600px;
+    padding: 14px;
+    
+    text-align: justify;
+    
+    background-color: variables.$white;
+    opacity: 80%;
+    border-radius: 14px;
+}
