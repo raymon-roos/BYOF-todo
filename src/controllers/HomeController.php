@@ -7,9 +7,6 @@ class HomeController
     public function GETIndex()
     {
         global $twig;
-        echo $twig->render(
-            'home.html',
-            ['pageTitle' => 'home']
-        );
+        echo $twig->render('home.html');
     }
 }

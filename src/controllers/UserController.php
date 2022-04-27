@@ -41,7 +41,8 @@ class UserController
                 $_SESSION['errorMessage'] = 'Missing username or password';
             }
         }
-            $this->GETLogin();
+
+        $this->GETLogin();
     }
 
     public function GETLogout()
