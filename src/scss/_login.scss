@@ -2,39 +2,61 @@
 
 .login {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 8px;
-
+    
     margin: auto;
     margin-top: 15vh;
-    width: 400px;
+    padding: 8px;
+    width: 450px;
+    height: 320px;
 
-    background-color: variables.$slate;
-    opacity: 80%;
-    border-radius: 8px;
+    background-color: variables.$transparentSlate;
+    border-radius: 12px;
     
-    * {
-        opacity: 1;
-    }
-
-    form {
+    .center {
         display: flex;
-        flex-direction: column;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
-        padding: 8px;
-        opacity: 1;
-        
-        input {
-            margin: 7px;
-            border: none;
-            width: auto;
-            border-radius: 14px;
-            text-align: center;
-        }
+        padding-right: 10px;
     }
+        .welcome {
+            height: 100%;
+            width: 35%;
+            padding-top: 22%;
+            padding-right: 5px;
+            text-align: end;            
+            color: variables.$dark-blue;
+            border-right: 3px solid variables.$slate;
+        }
+    
+        form {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            align-items: center;
+            padding: 8px;
+            opacity: 1;
+            
+            input {
+                margin: 7px;
+                border: none;
+                width: auto;
+                border-radius: 14px;
+                text-align: center;
+            }
+            
+            input[type=submit] {
+                width: 90px;
+                height: auto;
+                font-size: large;
+                background-color: variables.$slate;
+                color: whitesmoke;
+            }
+            
+            .errorMessage {
+                color: red;
+                text-overflow: clip;
+            }
+        }
 }
-
+    
 

@@ -1,12 +1,13 @@
 <div class="login">
     <section class="center">
-        <h2>Welkom op de {{ pageTitle }} pagina!</h2>
-
+        <div class="welcome">
+            <h2>Prepare to chart out your day!</h2>
+        </div>
         <form action="/user/login" method="POST">
             <input type="text" name="username" placeholder="Username" />
             <input type="password" name="password" placeholder="Password" />
             <input type="submit" value="login" name="login" />
+            <p class="errorMessage">{{ errorMessage }}</p>
         </form>
-        <p class="errorMessage">{{ errorMessage }}</p>
     </section>
 </div>
