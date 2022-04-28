@@ -2,6 +2,7 @@
 
 namespace controller;
 
+use PDOException;
 use RedBeanPHP\R as R;
 use service\DatabaseConnectionService as dbCon;
 
@@ -12,57 +13,88 @@ class TodoController
         (new dbCon())->connectDB();
     }
 
-    public function GETTodo()
+    public function GETCreateTodo()
     {
         $error = isset($_SESSION['errorMessage']) ? $_SESSION['errorMessage'] : "";
         global $twig;
         echo $twig->render(
-            'todo.html',
+            'create_todo.html',
             ['error' => $error]
         );
         unset($_SESSION['errorMessage']);
     }
 
-    public function POSTTodo()
+    public function GETViewLists()
     {
-        var_dump($_POST);
-        if (!empty($_POST['list_name']) && !empty($_POST['todo1'])) {
-            if ($this->findList($_POST['list_name'])) {
-                $this->addList($_POST);
-            }
+        $lists = $this->queryAllLists();
+        if ($lists) {
+            global $twig;
+            echo $twig->render(
+                'view_lists.html',
+                ['lists' => $lists]
+            );
+            return;
+        }
+        (new ErrorController())->GETObjectNotFound();
+    }
+
+    public function queryAllLists()
+    {
+        $lists = R::findAll('lists');
+        if ($lists) {
+            return $lists;            
+        }
+        return false;
+    }
+
+    public function POSTCreateTodo()
+    {
+        if (!empty($_POST['listName']) && !empty($_POST['todo1'])) {
+                $this->addTodo($_POST);
         } else {
             $_SESSION['errorMessage'] = 'Missing list name or todo item';
         }
 
-        $this->GETTodo();
-        unset($_SESSION['errorMessage']);
+        $this->GETCreateTodo();
     }
 
     private function findList($listName)
     {
-        $list = R::findOne('lists', 'list_name = ?', [ $listName ]);
+        $list = R::findOne('lists', 'listName = ?', [ $listName ]);
         if ($list) {
+            return $list;
+        }
+        return false;
+    }
+
+    private function updateList($listName)
+    {
+        $listID = R::findOne('lists', 'listName = ?', [ $listName ])['id'];
+        if ($listID) {
+            var_dump($listID);
             return true;
         }
         return false;
     }
 
-    private function updateList()
-    {
-    }
-
-    private function addList($newList)
+    private function addList($newListName)
     {
         $newTodoList = R::dispense('lists');                
-        $newTodoList['list_name'] = $newList['list_name'];
-        R::store($newTodoList, false);
+        $newTodoList['listName'] = $newListName;
+        R::store($newTodoList, true);
     }
 
-    private function addTodo($list)
+    private function addTodo($formInput)
     {
-        $newTodo = R::dispense('todos');                
-        $newTodo['list_name'] = $list['list_name'];
-        $newTodo['todo'] = $input['todo1'];
-        R::store($newTodo, false);
+        R::debug();
+        try {
+            $newTodo = R::dispense('todos');                
+            $newTodo['todoContent'] = $formInput['todo1'];
+            $newTodo['done'] = false;
+            $newTodo['list'] = R::find('lists', 'listName = ?', [$formInput['listName']]);
+            R::store($newTodo, true);
+        } catch (PDOException $e) {
+            var_dump($e->getMessage());
+        }
     }
 }
