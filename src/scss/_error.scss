@@ -1,0 +1,19 @@
+@use "variables";
+
+.error {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    
+    margin: auto;
+    margin-top: 15vh;
+    width: 500px;
+    height: 500px;
+    padding: 14px;
+    
+    text-align: justify;
+    
+    background-color: variables.$transparentOffWhite;
+    border-radius: 14px;
+}
