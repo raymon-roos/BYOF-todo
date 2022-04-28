@@ -10,7 +10,7 @@ class DatabaseConnectionService
     {
         if (!R::testConnection()) {
             R::setup(
-                'mysql:host=localhost;dbname=to_do',
+                'mysql:host=localhost;dbname=todo',
                 'bit_academy',
                 'bit_academy' 
             );
