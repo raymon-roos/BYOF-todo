@@ -2,22 +2,16 @@
 
 namespace controller;
 
-use PDOException;
 use RedBeanPHP\R as R;
-use service\DatabaseConnectionService as dbCon;
+use service\UserService;
+use controller\UserController;
 
-class TodoController
+class TodoController extends \service\ProviderService
 {
-    public function __construct()
-    {
-        (new dbCon())->connectDB();
-    }
-
     public function GETCreateTodo()
     {
-        $error = isset($_SESSION['errorMessage']) ? $_SESSION['errorMessage'] : "";
-        global $twig;
-        echo $twig->render(
+        $error = !empty($_SESSION['errorMessage']) ? $_SESSION['errorMessage'] : "";
+        echo $this->twig->render(
             'create_todo.html',
             ['error' => $error]
         );
@@ -26,10 +20,9 @@ class TodoController
 
     public function GETViewLists()
     {
-        $lists = $this->queryAllLists();
+        $lists = R::findAll('lists');
         if ($lists) {
-            global $twig;
-            echo $twig->render(
+            echo $this->twig->render(
                 'view_lists.html',
                 ['lists' => $lists]
             );
@@ -38,63 +31,71 @@ class TodoController
         (new ErrorController())->GETObjectNotFound();
     }
 
-    public function queryAllLists()
+    public function selectByID($id)
     {
-        $lists = R::findAll('lists');
-        if ($lists) {
-            return $lists;            
+        $list = $this->findListById($id);
+        $todos = R::findAll('todos', 'list_id = ?', [$id]);
+
+        if ($list && $todos) {
+            echo $this->twig->render(
+                'list_details.html',
+                ['list' => $list,
+                'todos' => $todos]
+            );
+            return;
         }
-        return false;
+
+        (new ErrorController())->GETObjectNotFound();
     }
 
     public function POSTCreateTodo()
     {
         if (!empty($_POST['listName']) && !empty($_POST['todo1'])) {
-                $this->addTodo($_POST);
-        } else {
-            $_SESSION['errorMessage'] = 'Missing list name or todo item';
+            if (!$this->findList($_POST['listName'])) {
+                $this->addList($_POST['listName']);
+            }
+            $this->addTodo($_POST);
+            $this->GETViewLists();
+            return;
         }
-
+        $_SESSION['errorMessage'] = 'Missing list name or todo item';
         $this->GETCreateTodo();
     }
 
+    private function findListById($id)
+    {
+        $list = R::findOne('lists', 'id = ?', [ $id ]);
+
+        return ($list) ?: false;
+    }
     private function findList($listName)
     {
-        $list = R::findOne('lists', 'listName = ?', [ $listName ]);
-        if ($list) {
-            return $list;
-        }
-        return false;
+        $list = R::findOne('lists', 'name = ?', [ $listName ]);
+
+        return ($list) ?: false;         
     }
 
     private function updateList($listName)
     {
-        $listID = R::findOne('lists', 'listName = ?', [ $listName ])['id'];
-        if ($listID) {
-            var_dump($listID);
-            return true;
-        }
-        return false;
     }
 
     private function addList($newListName)
     {
         $newTodoList = R::dispense('lists');                
-        $newTodoList['listName'] = $newListName;
-        R::store($newTodoList, true);
+        $newTodoList->name = $newListName;
+        R::store($newTodoList);
     }
 
     private function addTodo($formInput)
     {
-        R::debug();
         try {
             $newTodo = R::dispense('todos');                
-            $newTodo['todoContent'] = $formInput['todo1'];
-            $newTodo['done'] = false;
-            $newTodo['list'] = R::find('lists', 'listName = ?', [$formInput['listName']]);
+            $newTodo->task = $formInput['todo1'];
+            $newTodo->list = R::findOne('lists', 'name = ?', [$formInput['listName']]);
+            $newTodo->user = (new UserService())->checkLoggedInUserBySession();
             R::store($newTodo, true);
-        } catch (PDOException $e) {
-            var_dump($e->getMessage());
+        } catch (\RedBeanPHP\RedException $e) {
+            (new ErrorController())->GETDebug($e->getMessage());
         }
     }
 }

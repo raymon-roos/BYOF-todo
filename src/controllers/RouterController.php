@@ -7,25 +7,13 @@ use controller\HomeController;
 use controller\UserController;
 use controller\ErrorController;
 
-class RouterController
+class RouterController extends \service\ProviderService
 {
-    private $controller;
+    private object $controller;
 
     public function __construct()
     {
-        $this->checkIfLoggedIn();
-    }
-
-    private function checkIfLoggedIn()
-    {
-        $isLoginValid = (new UserService())->validateLoggedIn();
-
-        if ($isLoginValid) {
-            $this->chooseController();
-            return;
-        }
-
-        (new UserController())->POSTLogin();
+        $this->chooseController();
     }
 
     private function chooseController()
@@ -33,21 +21,19 @@ class RouterController
         $url = explode("/", $_GET["url"]);
 
         if (empty($url[0])) {
-            $controller = new HomeController();
-            $controller->GETIndex();
-            exit();
+            $this->controller = new HomeController();
+            $this->chooseMethod('index');
+            return;
         }
 
-        $controllerName = str_replace('/', '', ucfirst($url[0])) . "Controller";
-        $controllerNameSpaced = "controller\\" . $controllerName;
-        $controllerPath = $controllerName . ".php";
+        $controllerName = ucfirst($url[0]) . "Controller";
+        $controllerNameSpaced = 'controller\\' . $controllerName;
 
-        if (!file_exists("./controllers/$controllerPath")) { 
+        if (!file_exists("./controllers/$controllerName.php")) { 
             (new ErrorController())->GETPageUnknown($url[0]); 
             return;
         }
 
-        require_once("./controllers/$controllerPath");
         $this->controller = new $controllerNameSpaced();
 
         if (!empty($url[1])) {
@@ -58,6 +44,18 @@ class RouterController
 
     private function chooseMethod($url)
     {
+        $method = $_SERVER['REQUEST_METHOD'] . ucfirst($url); 
+
+        if ($method == 'POSTLogin' && method_exists($this->controller, 'POSTLogin')) {
+            $this->controller->POSTLogin();
+            return;
+        }
+
+        if (!(new UserService())->validateLoggedIn()) {
+            (new UserController())->GETLogin();
+            return;
+        }
+
         if (
             is_numeric($url) &&
             method_exists($this->controller, 'selectByID') 
@@ -66,13 +64,13 @@ class RouterController
             exit();
         }
 
-        $method = $_SERVER['REQUEST_METHOD'] . ucfirst($url); 
-
-        if (method_exists($this->controller, $method)) {
+        if (
+            method_exists($this->controller, $method)
+        ) {
             $this->controller->$method();
             exit();
         }
-
+        
         (new ErrorController())->GETPageUnknown($url); 
         exit();
     }

@@ -2,13 +2,25 @@
 
 namespace controller;
 
-class ErrorController
+class ErrorController extends \service\ProviderService
 {
+    // public function __construct()
+    // {
+    //     // $this->renderErrorMessage();
+    // }
+    
+    public function renderErrorMessage()
+    {
+        echo $this->twig->render(
+            'error.html',
+            ['errors' => $_SESSION['errors']]
+        );   
+    }
+
     public function GETPageUnknown($target)
     {
         http_response_code(404);
-        global $twig;
-        echo $twig->render(
+        echo $this->twig->render(
             'error.html',
             ['error' => http_response_code() . " - $target not found"]
         );   
@@ -16,8 +28,7 @@ class ErrorController
 
     public function GETObjectNotFound()
     {
-        global $twig;
-        echo $twig->render(
+        echo $this->twig->render(
             'error.html',
             ['error' => 'Sorry, but the object you were searching for does not exist, try something else.']
         ); 
@@ -25,10 +36,17 @@ class ErrorController
 
     public function GETInputIncorrect()
     {
-        global $twig;
-        echo $twig->render(
+        echo $this->twig->render(
             'error.html',
             ['error' => 'Sorry, but you filled in something incorrect.']
+        ); 
+    }
+
+    public function GETDebug($dump)
+    {
+        echo $this->twig->render(
+            'error.html',
+            ['error' => $dump]
         ); 
     }
 }

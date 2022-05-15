@@ -3,43 +3,32 @@
 namespace controller;
 
 use RedBeanPHP\R as R;
-use service\DatabaseConnectionService as dbCon;
+use service\ProviderService;
 
-class UserController
+class UserController extends \service\ProviderService
 {
-    public function __construct()
-    {
-        (new dbCon())->connectDB();
-    }
-
     public function GETLogin()
     {
-        $errorMessage = (!empty($_SESSION['errorMessage'])) ? $errorMessage = $_SESSION['errorMessage'] : $errorMessage = "";
+        $error = !empty($_SESSION['errors']['login']) ? $_SESSION['errors']['login'] : "";
 
-        global $twig;
-        echo $twig->render(
+        echo $this->twig->render(
             'login.html',
             ['pageTitle' => 'login',
-            'errorMessage' => $errorMessage]
+            'errorMessage' => $error ]
         );
-        unset($_SESSION['errorMessage']);
     }
 
     public function POSTLogin()
     {
-        if (isset($_POST['login'])) {
-            if (!empty($_POST['username']) && !empty($_POST['password'])) {
-                if ($this->verifyUser($_POST['username'], $_POST['password'])) {
-                    $_SESSION['token'] = base64_encode(random_bytes(89));
-                    $this->setSessionToken($_POST['username'], $_SESSION['token']);
-                    header("location: /");
-                    exit();
-                } else {
-                    $_SESSION['errorMessage'] = 'Incorrect username or password';
-                }
+        if (!empty($_POST['username']) && !empty($_POST['password'])) {
+            if ($this->verifyUser($_POST['username'], $_POST['password'])) {
+                header("location: /todo/viewLists");
+                return;
             } else {
-                $_SESSION['errorMessage'] = 'Missing username or password';
+                $_SESSION['errors']['login'] = 'Incorrect username or password';
             }
+        } else {
+            $_SESSION['errors']['login'] = 'Missing username or password';
         }
 
         $this->GETLogin();
@@ -60,30 +49,19 @@ class UserController
         $user = R::findOne('users', ' username = ?', [ $username ]);
 
         if ($user && password_verify($password, $user->password)) {
+            $this->setSessionToken($user);
             return true;
         }
         return false;
     }
 
-    public function verifySessionToken()
+    private function setSessionToken($user)
     {
-        if (!isset($_SESSION['token'])) {
-            return false;
-        }
+        $_SESSION['token'] = base64_encode(random_bytes(89));
 
-        $token = R::find('sessions', ' token = ?', [ $_SESSION['token'] ]);
-
-        if ($token) {
-            return true;
-        }
-        return false;
-    }
-
-    private function setSessionToken($username, $newToken)
-    {
         $setToken = R::dispense('sessions');
-        $setToken->username = $username;
-        $setToken->token = $newToken;
+        $setToken->user = $user;
+        $setToken->token = $_SESSION['token'];  
         R::store($setToken, true);
     }
 }

@@ -2,11 +2,10 @@
 
 namespace controller;
 
-class HomeController
+class HomeController extends \service\ProviderService
 {
     public function GETIndex()
     {
-        global $twig;
-        echo $twig->render('home.html');
+        echo $this->twig->render('home.html');
     }
 }

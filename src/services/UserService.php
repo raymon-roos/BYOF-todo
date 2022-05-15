@@ -3,14 +3,11 @@
 namespace service;
 
 use RedBeanPHP\R as R;
-use service\DatabaseConnectionService as dbCon;
+use controller\UserController as UserController;
 
-class UserService
+class UserService extends \service\ProviderService
 {
-    public function __construct()
-    {
-        (new dbCon())->connectDB();
-    }
+    public $loggedInUser;
 
     public function validateLoggedIn()
     {
@@ -20,9 +17,35 @@ class UserService
 
         $token = R::find('sessions', ' token = ?', [ $_SESSION['token'] ]);
 
-        if ($token) {
-            return true;
+        return ($token) ?: false;
+    }
+
+    public function checkLoggedInUserBySession() 
+    {
+        if (!isset($_SESSION['token'])) {
+            (new UserController())->GETLogin();
+            return;
+        } 
+
+        $user = R::findOne('sessions', ' token = ?', [ $_SESSION['token'] ])->user;
+
+        return ($user) ?: false;
+    }
+
+    public function findUserByUsername($userName)
+    {
+        $user = R::findOne('users', ' username = ?', [ $userName ]);
+
+        return ($user) ? $user : false;
+    }
+
+    private function setLoggedInUser()
+    {
+        $checkUser = $this->checkLoggedInUserBySession();
+        if ($checkUser) {
+            $this->loggedInUser = $checkUser;
+            return;
         }
-        return false;
+        (new UserController())->GETLogin();
     }
 }

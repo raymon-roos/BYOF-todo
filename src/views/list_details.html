@@ -1,0 +1,17 @@
+<div class="lists">
+
+    <h1>{{ list.name }}</h1>
+
+    <table>
+        <th>Task</th>
+        <th>Done</th>
+        {% for todo in todos %}
+        <tr>
+            <td>{{ todo.task }}</td>
+            <td>{{ todo.done }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <a href="/todo/createTodo">Create a new list</a>
+</div>

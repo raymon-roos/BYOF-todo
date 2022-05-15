@@ -1,7 +1,14 @@
 <div class="lists">
-    <ul>
+    <table>
+        <th>List</th>
         {% for list in lists %}
-        <li>List: {{ list.list_name }} </li>
+        <tr>
+            <td>{{ list.name }}</td>
+            <td> <a href="/todo/{{todo.id}}">View</a></td>
+        </tr>
         {% endfor %}
-    </ul>
+    </table>
+
+
+    <a href="/todo/createTodo">Create a new list</a>
 </div>

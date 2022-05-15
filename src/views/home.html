@@ -2,31 +2,35 @@
     <div>
         <h2>welkom op de home pagina!</h2>
     </div>
-
     <br>
-
     <main>
         <h1>Deze website is geheel gebouwd met mijn eigen framework! </h1>
         <section>
             <article>
                 <p>
-                    De website werkt wordt gehost op een virtual host, met een .htaccess file die alle pagina
-                    verzoeken terugstuurt naar index.php.
-                    Index php analyseert de url die de gebruiker heeft opgegeven, om vervolgens de juist controller
-                    en methode te laden uit de OOP klassenstructuur. Composer word gebruikt om de dependecies te
-                    regelen. Twig is de template engine waarmee puur html (views) gerendered worden waar nodig.
-                    RedbeanPHP is de Object Relational Manager, die mij een makkelijke wrapper geeft rondom pdo voor
-                    het maken van database structuren.
+                    De website werkt wordt gehost op een virtual host, met een
+                    .htaccess file die alle pagina verzoeken terugstuurt naar
+                    index.php. Index php instantieert een router object, die de
+                    url die de gebruiker heeft opgegeven analyseert, om
+                    vervolgens de juist controller en methode te laden uit de
+                    OOP klassenstructuur. Composer word gebruikt om de
+                    dependecies te regelen. Twig is de template engine waarmee
+                    html (views) gerendered worden waar nodig. RedbeanPHP
+                    is de Object Relational Manager, die mij een makkelijke
+                    wrapper geeft rondom pdo voor het maken van database
+                    structuren.
                 </p>
-            </article>
-            <article>
+                <br>
                 <p>
-                    Als een bonus zijn de login gegevens van de test gebruiker opgeslagen in B_CRYPT gehashte vorm.
-                    Een login poging vraagt de hash op uit de database doormiddel van RedBean. Als de hash van het
-                    ingevulde wachtwoord overeenkomt met de "true" hash uit de database, wordt de login gevalideert
-                    en een sessie token aangemaakt, met een base64 encoded string van de cryptografisch robuuste
-                    random_bytes().
-                    Er worden verbose waarschuwing gegeven, en niet-ingelogde gebruikers worden geweerd.
+                    De login gegevens van de test gebruiker zijn
+                    opgeslagen in B_CRYPT gehashte vorm. Een login poging
+                    vraagt de hash op uit de database doormiddel van RedBean.
+                    Als de hash van het ingevulde wachtwoord overeenkomt met de
+                    "true" hash uit de database, wordt de login gevalideert en
+                    een sessie token aangemaakt, met een base64 encoded string
+                    van de cryptografisch robuuste random_bytes(). Er worden
+                    verbose waarschuwing gegeven, en niet-ingelogde gebruikers
+                    worden geweerd.
                 </p>
             </article>
         </section>
