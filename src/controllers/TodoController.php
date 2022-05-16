@@ -97,8 +97,8 @@ class TodoController extends \service\ProviderService
     {
         $newTodoList = R::dispense('lists');                
         $newTodoList->name = $newListName;
-        $newTodoList->user = (new UserService())->findLoggedInUserBySession();
-        R::store($newTodoList, true);
+        $newTodoList->users = (new UserService())->findLoggedInUserBySession();
+        R::store($newTodoList);
     }
 
     private function addTodo($formInput)

@@ -28,6 +28,7 @@ class UserService extends \service\ProviderService
         } 
 
         $user = R::findOne('sessions', ' token = ?', [ $_SESSION['token'] ])->user;
+        var_dump($user);
 
         return ($user) ?: false;
     }
