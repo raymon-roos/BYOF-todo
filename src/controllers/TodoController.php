@@ -37,11 +37,14 @@ class TodoController extends \service\ProviderService
         $todos = R::findAll('todos', 'list_id = ?', [$id]);
 
         if ($list && $todos) {
+            $error = !empty($_SESSION['errorMessage']) ? $_SESSION['errorMessage'] : "";
             echo $this->twig->render(
                 'list_details.html',
                 ['list' => $list,
-                'todos' => $todos]
+                'todos' => $todos,
+                'error' => $error]
             );
+            unset($_SESSION['errorMessage']);
             return;
         }
 
@@ -68,6 +71,7 @@ class TodoController extends \service\ProviderService
 
         return ($list) ?: false;
     }
+
     private function findList($listName)
     {
         $list = R::findOne('lists', 'name = ?', [ $listName ]);
@@ -75,15 +79,26 @@ class TodoController extends \service\ProviderService
         return ($list) ?: false;         
     }
 
-    private function updateList($listName)
+    public function POSTUpdateList()
     {
+        var_dump($_POST);
+        if (!empty($_POST)) {
+            foreach ($_POST as $formInput) {
+                if ($formInput != "Update tasks") {
+                    $newData[] = $formInput;
+                }
+            }
+        }
+        var_dump($newData);
+        $_SESSION['errorMessage'] = 'Missing list name or todo item';
     }
 
     private function addList($newListName)
     {
         $newTodoList = R::dispense('lists');                
         $newTodoList->name = $newListName;
-        R::store($newTodoList);
+        $newTodoList->user = (new UserService())->findLoggedInUserBySession();
+        R::store($newTodoList, true);
     }
 
     private function addTodo($formInput)
@@ -92,8 +107,8 @@ class TodoController extends \service\ProviderService
             $newTodo = R::dispense('todos');                
             $newTodo->task = $formInput['todo1'];
             $newTodo->list = R::findOne('lists', 'name = ?', [$formInput['listName']]);
-            $newTodo->user = (new UserService())->checkLoggedInUserBySession();
-            R::store($newTodo, true);
+            $newTodo->user = (new UserService())->findLoggedInUserBySession();
+            R::store($newTodo);
         } catch (\RedBeanPHP\RedException $e) {
             (new ErrorController())->GETDebug($e->getMessage());
         }

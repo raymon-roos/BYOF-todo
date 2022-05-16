@@ -13,5 +13,15 @@
     text-align: justify;
     
     background-color: variables.$transparentOffWhite;
+    // background-image: url("/src/views/img/topography.svg");
     border-radius: 14px;
+    
+    form {
+        input[type=text],input[type=checkbox] {
+            border: none;
+            background-color: lightgray;
+            border-radius: 14px;
+            text-align: center;
+       } 
+    }
 }

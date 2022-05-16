@@ -2,16 +2,25 @@
 
     <h1>{{ list.name }}</h1>
 
-    <table>
-        <th>Task</th>
-        <th>Done</th>
-        {% for todo in todos %}
-        <tr>
-            <td>{{ todo.task }}</td>
-            <td>{{ todo.done }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-
-    <a href="/todo/createTodo">Create a new list</a>
+    <form action="updateList" method="POST">
+        <table>
+            <th>Task</th>
+            <th>Done</th>
+            {% set i = 1 %}
+            {% for todo in todos %}
+            <tr>
+                <td><input type="text" name="task{{ i }}" value="{{ todo.task }}"></td>
+                {% if todo.done == yes %}
+                <td><input type="checkbox" name="done{{ i }}" checked></td>
+                {% else %}
+                <td><input type="checkbox" name="done{{ i }}" unchecked></td>
+                {% endif %}
+            </tr>
+            {% set i = i + 1 %}
+            {% endfor %}
+        </table>
+        <input type="submit" name="update" value="Update tasks">
+    </form>
+    <p class="todoError">{{ error }}</p>
+    <a href="/todo/viewLists">Back to overview</a>
 </div>

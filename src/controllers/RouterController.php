@@ -64,9 +64,7 @@ class RouterController extends \service\ProviderService
             exit();
         }
 
-        if (
-            method_exists($this->controller, $method)
-        ) {
+        if (method_exists($this->controller, $method)) {
             $this->controller->$method();
             exit();
         }

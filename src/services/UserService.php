@@ -20,7 +20,7 @@ class UserService extends \service\ProviderService
         return ($token) ?: false;
     }
 
-    public function checkLoggedInUserBySession() 
+    public function findLoggedInUserBySession() 
     {
         if (!isset($_SESSION['token'])) {
             (new UserController())->GETLogin();
@@ -36,12 +36,12 @@ class UserService extends \service\ProviderService
     {
         $user = R::findOne('users', ' username = ?', [ $userName ]);
 
-        return ($user) ? $user : false;
+        return ($user) ?: false;
     }
 
     private function setLoggedInUser()
     {
-        $checkUser = $this->checkLoggedInUserBySession();
+        $checkUser = $this->findLoggedInUserBySession();
         if ($checkUser) {
             $this->loggedInUser = $checkUser;
             return;
