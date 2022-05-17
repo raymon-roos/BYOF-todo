@@ -4,7 +4,6 @@ namespace controller;
 
 use RedBeanPHP\R as R;
 use service\UserService;
-use controller\UserController;
 
 class TodoController extends \service\ProviderService
 {
@@ -97,7 +96,7 @@ class TodoController extends \service\ProviderService
     {
         $newTodoList = R::dispense('lists');                
         $newTodoList->name = $newListName;
-        $newTodoList->users = (new UserService())->findLoggedInUserBySession();
+        $newTodoList->user = (new UserService())->findLoggedInUserBySession();
         R::store($newTodoList);
     }
 
@@ -106,6 +105,7 @@ class TodoController extends \service\ProviderService
         try {
             $newTodo = R::dispense('todos');                
             $newTodo->task = $formInput['todo1'];
+            $newTodo->done = 'no';
             $newTodo->list = R::findOne('lists', 'name = ?', [$formInput['listName']]);
             $newTodo->user = (new UserService())->findLoggedInUserBySession();
             R::store($newTodo);

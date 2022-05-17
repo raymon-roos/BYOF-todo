@@ -3,7 +3,6 @@
 namespace service;
 
 use RedBeanPHP\R as R;
-use controller\UserController as UserController;
 
 class UserService extends \service\ProviderService
 {
@@ -15,22 +14,19 @@ class UserService extends \service\ProviderService
             return false;
         }
 
-        $token = R::find('sessions', ' token = ?', [ $_SESSION['token'] ]);
+        $sessionBean = R::findOne('sessions', ' token = ?', [ $_SESSION['token'] ]);
 
-        return ($token) ?: false;
+        return ($sessionBean) ?: false;
     }
 
     public function findLoggedInUserBySession() 
     {
-        if (!isset($_SESSION['token'])) {
-            (new UserController())->GETLogin();
-            return;
-        } 
+        $sessionBean = $this->validateLoggedIn();
+        if ($sessionBean) {
+            $userBean = R::findOne('users', 'id=?', [ $sessionBean->user_id ]);
+        }
 
-        $user = R::findOne('sessions', ' token = ?', [ $_SESSION['token'] ])->user;
-        var_dump($user);
-
-        return ($user) ?: false;
+        return ($userBean) ?: false;
     }
 
     public function findUserByUsername($userName)
@@ -45,8 +41,6 @@ class UserService extends \service\ProviderService
         $checkUser = $this->findLoggedInUserBySession();
         if ($checkUser) {
             $this->loggedInUser = $checkUser;
-            return;
         }
-        (new UserController())->GETLogin();
     }
 }

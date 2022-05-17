@@ -3,7 +3,6 @@
 namespace controller;
 
 use RedBeanPHP\R as R;
-use service\ProviderService;
 
 class UserController extends \service\ProviderService
 {
@@ -32,6 +31,14 @@ class UserController extends \service\ProviderService
         }
 
         $this->GETLogin();
+    }
+
+    public function GETCreateUser()
+    {
+        $newUser = R::dispense('users');
+        $newUser->username = 'user';
+        $newUser->password = password_hash('user', PASSWORD_DEFAULT);
+        R::store($newUser);
     }
 
     public function GETLogout()

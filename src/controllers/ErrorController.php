@@ -4,11 +4,6 @@ namespace controller;
 
 class ErrorController extends \service\ProviderService
 {
-    // public function __construct()
-    // {
-    //     // $this->renderErrorMessage();
-    // }
-    
     public function renderErrorMessage()
     {
         echo $this->twig->render(

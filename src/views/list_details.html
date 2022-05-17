@@ -1,24 +1,23 @@
 <div class="lists">
 
     <h1>{{ list.name }}</h1>
-
+    <div class="headings">
+        <h3>Task</h3>
+        <h3>Done</h3>
+    </div>
     <form action="updateList" method="POST">
-        <table>
-            <th>Task</th>
-            <th>Done</th>
-            {% set i = 1 %}
-            {% for todo in todos %}
-            <tr>
-                <td><input type="text" name="task{{ i }}" value="{{ todo.task }}"></td>
-                {% if todo.done == yes %}
-                <td><input type="checkbox" name="done{{ i }}" checked></td>
-                {% else %}
-                <td><input type="checkbox" name="done{{ i }}" unchecked></td>
-                {% endif %}
-            </tr>
-            {% set i = i + 1 %}
-            {% endfor %}
-        </table>
+        {% set i = 1 %}
+        {% for todo in todos %}
+        <div class="todoRow">
+            <input type="text" name="task{{ i }}" value="{{ todo.task }}">
+            {% if todo.done == yes %}
+            <input type="checkbox" name="done{{ i }}" checked>
+            {% else %}
+            <input type="checkbox" name="done{{ i }}" unchecked>
+        </div>
+        {% endif %}
+        {% set i = i + 1 %}
+        {% endfor %}
         <input type="submit" name="update" value="Update tasks">
     </form>
     <p class="todoError">{{ error }}</p>
