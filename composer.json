@@ -5,6 +5,7 @@
     },
     "autoload": {
         "psr-4": {
+            "BYOF\\": "src/",
             "controller\\": "src/controllers/",
             "service\\": "src/services/"
         }

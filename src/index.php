@@ -4,6 +4,6 @@ session_start();
 
 require_once '../vendor/autoload.php';
 
-echo (new \service\ProviderService())->twig->render('header.html');
+(new \service\ViewService())->displayPage('header', []);
 
 $router = new \controller\RouterController();

@@ -20,6 +20,6 @@
         {% endfor %}
         <input type="submit" name="update" value="Update tasks">
     </form>
-    <p class="todoError">{{ error }}</p>
+    <div class="todoWarning">{% include('warning.html') %}</div>
     <a href="/todo/viewLists">Back to overview</a>
 </div>

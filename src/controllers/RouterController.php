@@ -7,7 +7,7 @@ use controller\HomeController;
 use controller\UserController;
 use controller\ErrorController;
 
-class RouterController extends \service\ProviderService
+class RouterController extends ParentController
 {
     private object $controller;
 
@@ -26,10 +26,9 @@ class RouterController extends \service\ProviderService
             return;
         }
 
-        $controllerName = ucfirst($url[0]) . "Controller";
-        $controllerNameSpaced = 'controller\\' . $controllerName;
+        $controllerNameSpaced = 'controller\\' . ucfirst($url[0]) . 'Controller';
 
-        if (!file_exists("./controllers/$controllerName.php")) { 
+        if (!class_exists($controllerNameSpaced)) { 
             (new ErrorController())->GETPageUnknown($url[0]); 
             return;
         }
@@ -37,6 +36,7 @@ class RouterController extends \service\ProviderService
         $this->controller = new $controllerNameSpaced();
 
         if (!empty($url[1])) {
+            header("X-Controller: {$controllerNameSpaced}");
             $this->chooseMethod($url[1]); 
             return;
         }
@@ -66,6 +66,7 @@ class RouterController extends \service\ProviderService
 
         if (method_exists($this->controller, $method)) {
             $this->controller->$method();
+            header("X-Method: $method");
             exit();
         }
         

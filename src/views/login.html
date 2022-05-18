@@ -7,7 +7,8 @@
             <input type="text" name="username" placeholder="Username" />
             <input type="password" name="password" placeholder="Password" />
             <input type="submit" value="login" name="login" />
-            <p class="errorMessage">{{ errorMessage }}</p>
+            <!-- <p class="errorMessage">{{ warning }}</p> -->
+            {% include('warning.html') %}
         </form>
     </section>
 </div>

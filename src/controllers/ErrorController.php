@@ -2,46 +2,31 @@
 
 namespace controller;
 
-class ErrorController extends \service\ProviderService
+class ErrorController extends ParentController
 {
     public function renderErrorMessage()
     {
-        echo $this->twig->render(
-            'error.html',
-            ['errors' => $_SESSION['errors']]
-        );   
+        $this->viewService->displayError($_SESSION['errors']);
     }
 
     public function GETPageUnknown($target)
     {
         http_response_code(404);
-        echo $this->twig->render(
-            'error.html',
-            ['error' => http_response_code() . " - $target not found"]
-        );   
+        $this->viewService->displayError(http_response_code() . " - $target not found");
     }
 
     public function GETObjectNotFound()
     {
-        echo $this->twig->render(
-            'error.html',
-            ['error' => 'Sorry, but the object you were searching for does not exist, try something else.']
-        ); 
+        $this->viewService->displayError('Sorry, but the object you were searching for could not be found, try something else.');
     }
 
     public function GETInputIncorrect()
     {
-        echo $this->twig->render(
-            'error.html',
-            ['error' => 'Sorry, but you filled in something incorrect.']
-        ); 
+        $this->viewService->displayWarning('Sorry, but the object you were searching for could not be found, try something else.');
     }
 
     public function GETDebug($dump)
     {
-        echo $this->twig->render(
-            'error.html',
-            ['error' => $dump]
-        ); 
+        $this->viewService->displayWarning($dump);
     }
 }

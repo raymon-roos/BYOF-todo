@@ -4,33 +4,27 @@ namespace controller;
 
 use RedBeanPHP\R as R;
 
-class UserController extends \service\ProviderService
+class UserController extends ParentController
 {
-    public function GETLogin()
+    public function GETLogin(string $warning = '')
     {
-        $error = !empty($_SESSION['errors']['login']) ? $_SESSION['errors']['login'] : "";
-
-        echo $this->twig->render(
-            'login.html',
-            ['pageTitle' => 'login',
-            'errorMessage' => $error ]
-        );
+        $this->viewService->displayPage('login', ['warning' => $warning]);
     }
 
     public function POSTLogin()
     {
         if (!empty($_POST['username']) && !empty($_POST['password'])) {
-            if ($this->verifyUser($_POST['username'], $_POST['password'])) {
+            $loginAttempt = $this->verifyLogin($_POST['username'], $_POST['password']);
+            if ($loginAttempt) {
+                $this->setSessionToken($loginAttempt);
                 header("location: /todo/viewLists");
                 return;
             } else {
-                $_SESSION['errors']['login'] = 'Incorrect username or password';
+                $this->GETLogin('Incorrect username or password');
             }
         } else {
-            $_SESSION['errors']['login'] = 'Missing username or password';
+            $this->GETLogin('Missing username or password');
         }
-
-        $this->GETLogin();
     }
 
     public function GETCreateUser()
@@ -51,13 +45,12 @@ class UserController extends \service\ProviderService
         $this->GETLogin();
     }
 
-    private function verifyUser($username, $password) 
+    private function verifyLogin($username, $password) 
     {
         $user = R::findOne('users', ' username = ?', [ $username ]);
 
         if ($user && password_verify($password, $user->password)) {
-            $this->setSessionToken($user);
-            return true;
+            return $user;
         }
         return false;
     }

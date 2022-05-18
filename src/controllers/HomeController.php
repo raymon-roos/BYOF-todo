@@ -2,10 +2,10 @@
 
 namespace controller;
 
-class HomeController extends \service\ProviderService
+class HomeController extends ParentController
 {
     public function GETIndex()
     {
-        echo $this->twig->render('home.html');
+        $this->viewService->displayPage('home');
     }
 }

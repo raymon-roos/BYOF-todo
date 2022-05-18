@@ -14,8 +14,9 @@
 
                 <input type="submit" value="submit">
             </form>
-            <p class="todoError"> {{ error }} </p>
+            <div class="todoWarning"> {% include('warning.html') %} </div>
         </section>
     </main>
+    <a href="/todo/viewLists">Back to overview</a>
 </div>
 <!-- <script src="/src/js/add_todo.js"></script> -->

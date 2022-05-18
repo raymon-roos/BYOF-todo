@@ -5,26 +5,29 @@ namespace controller;
 use RedBeanPHP\R as R;
 use service\UserService;
 
-class TodoController extends \service\ProviderService
+class TodoController extends ParentController
 {
-    public function GETCreateTodo()
+    public function GETCreateTodo(string $warning = '')
     {
-        $error = !empty($_SESSION['errorMessage']) ? $_SESSION['errorMessage'] : "";
-        echo $this->twig->render(
-            'create_todo.html',
-            ['error' => $error]
-        );
-        unset($_SESSION['errorMessage']);
+        $this->viewService->displayPage('create_todo', ['warning' => $warning]); 
     }
 
     public function GETViewLists()
     {
         $lists = R::findAll('lists');
         if ($lists) {
-            echo $this->twig->render(
-                'view_lists.html',
-                ['lists' => $lists]
-            );
+            // foreach ($listCollection as $lists => $list) {
+            //     $data = ['lists' => $list];
+            // }
+
+            $this->viewService->displayPage('view_lists', $lists);
+
+            // $this->viewService->twig->render('view_lists.html', [$lists]);
+            echo '<pre>';
+            var_dump($lists);
+            echo '</pre>';
+            
+            
             return;
         }
         (new ErrorController())->GETObjectNotFound();
@@ -36,14 +39,11 @@ class TodoController extends \service\ProviderService
         $todos = R::findAll('todos', 'list_id = ?', [$id]);
 
         if ($list && $todos) {
-            $error = !empty($_SESSION['errorMessage']) ? $_SESSION['errorMessage'] : "";
-            echo $this->twig->render(
-                'list_details.html',
+            $this->viewService->displayPage(
+                'list_details', 
                 ['list' => $list,
-                'todos' => $todos,
-                'error' => $error]
+                'todos' => $todos]
             );
-            unset($_SESSION['errorMessage']);
             return;
         }
 
@@ -60,8 +60,7 @@ class TodoController extends \service\ProviderService
             $this->GETViewLists();
             return;
         }
-        $_SESSION['errorMessage'] = 'Missing list name or todo item';
-        $this->GETCreateTodo();
+        $this->GETCreateTodo('Missing list name or todo item');
     }
 
     private function findListById($id)

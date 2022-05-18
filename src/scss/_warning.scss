@@ -1,0 +1,10 @@
+@use "variables";
+
+.warning, .warningMessage {
+    display: inline;
+    margin-top: 20px;
+    width: 100%;
+    color: rgb(255, 60, 0);
+    font-style: italic;
+    font-weight: 700;
+}

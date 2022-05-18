@@ -22,19 +22,20 @@
             height: 100%;
             width: 35%;
             padding-top: 22%;
-            padding-right: 5px;
+            padding-right: 6%;
             text-align: end;            
             color: variables.$dark-blue;
             border-right: 3px solid variables.$slate;
+            font-style: italic;
         }
     
         form {
             display: flex;
             flex-direction: column;
-            justify-content: space-evenly;
+            justify-content: center;
+            height: 100%;
             align-items: center;
             padding: 8px;
-            opacity: 1;
             
             input {
                 margin: 7px;
