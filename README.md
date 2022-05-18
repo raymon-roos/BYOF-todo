@@ -9,7 +9,7 @@ mostly to display my newly acquired experience with Object Oriented programming.
 > 'Create a to-do tracking website, using the front/backend framework strategies you have
 learned so far.'
 
-![assignment screenshot]{./dist/screenshot.png}
+![Assignment screenshot](./extra/screenshot.png)
 
 The goal of the assignment is to familiarise oneself somewhat with the inner workings of a
 web development framework, so that the underlying systems won't seem as alien. This also
@@ -18,12 +18,10 @@ builds an appreciation for how much of the heavy lifting isn't done by the devel
 This project is hosted locally only, under an apache virtual host.
 The project contains an .htaccess file, with the following URL rewriting rules:
 
-``
-RewriteEngine on
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(.*)$ src/index.php?url=$1 [NC,L,QSA]
-RewriteRule ^([a-z]*)$ src/index.php [NC,L,QSA] 
-``
+    RewriteEngine on  
+    RewriteCond %{REQUEST_FILENAME} !-f    
+    RewriteRule ^(.*)$ src/index.php?url=$1 [NC,L,QSA]    
+    RewriteRule ^([a-z]*)$ src/index.php [NC,L,QSA]  
 
 Which serves the purpose of redirecting _every_ request back to `src/index.php` and pass
 the url entered by the user as a `$_GET` variable. The index.php file spawns a router,
@@ -41,16 +39,16 @@ with `Twig`. Styling is done through `sass`.
 
 ### Screenshot of the site
 
-![Screenshot]{./dist/my_website.png}
+![Website screenshot](./extra/my_website.png)
 
 ### Dependencies for this project: 
 
-`composer install`
-gabordemooij/redbean      
+`composer install`  
+gabordemooij/redbean        
 twig/twig         
 
-`npm install`
-sass@1.50.1
+`npm install`  
+sass@1.50.1  
 
 To tell `sass` to watch `.scss` files for changes and recompile in real time, execute `npm run
 sass` in a terminal while inside this directory. 
