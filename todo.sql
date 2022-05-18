@@ -38,7 +38,8 @@ CREATE TABLE `lists` (
 --
 
 INSERT INTO `lists` (`id`, `name`, `user_id`) VALUES
-(1, '???????', 11);
+(1, 'Example list 1' 1),
+(2, 'Example list 2' 11);
 
 -- --------------------------------------------------------
 
@@ -51,15 +52,6 @@ CREATE TABLE `sessions` (
   `token` varchar(191) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   `user_id` int(10) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
-
---
--- Dumping data for table `sessions`
---
-
-INSERT INTO `sessions` (`id`, `token`, `user_id`) VALUES
-(1, 'GL04IDBPEqMSeLhHxIyYvPxhJ9AXk3XT777jlcYbcDtFy+gedh5W08M/1sLybwHlBgnskFj0VLholgY2kRZ6WeRc9d89LXM3wocqoBfHdFPqeHnkfD0W2zo=', 11);
-
--- --------------------------------------------------------
 
 --
 -- Table structure for table `todos`
@@ -78,9 +70,10 @@ CREATE TABLE `todos` (
 --
 
 INSERT INTO `todos` (`id`, `task`, `done`, `list_id`, `user_id`) VALUES
-(1, '????????', 'no', 1, 11),
-(2, 'asdfffffffffffffffff', 'no', 1, 11),
-(3, 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'no', 1, 11);
+(1, 'Testing 1', 'no', 1, 11),
+(2, 'Testing 2', 'yes', 1, 11),
+(3, 'Testing 1', 'no', 2, 11),
+(2, 'Testing 2', 'yes', 2, 11);
 
 -- --------------------------------------------------------
 
