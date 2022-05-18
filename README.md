@@ -2,7 +2,7 @@
 
 A showcase of a particularly involved school exercise/assignment I have been working on. 
 This is a still a working progress, and can hardly be called fully featured. It serves
-mostly to display my newly acquired experience with Object Oriented programming. 
+mostly to display my newly acquired experience with Object Oriented programming in PHP.
 
 ## Assignment: 
 
