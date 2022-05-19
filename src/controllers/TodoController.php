@@ -16,14 +16,8 @@ class TodoController extends ParentController
     {
         $data = R::findAll('lists');
         if ($data) {
-            $this->viewService->displayPage('view_lists', $data);
+            $this->viewService->displayPage('view_lists', ['data' => $data]);
 
-            // $this->viewService->twig->render('view_lists.html', $data);
-            echo '<pre>';
-            var_dump($data);
-            echo '</pre>';
-            
-            
             return;
         }
         (new ErrorController())->GETObjectNotFound();
