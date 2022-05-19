@@ -6,15 +6,20 @@
 
 <div class="lists">
     <h2>Lists</h2>
-    <table>
-        {% for list in data %}
-
-        <tr>
-            <td>{{ list.name }}</td>
-            <td> <a href="/todo/{{ list.id }}">View</a></td>
-        </tr>
+    <div class="listDetails">
+        <div class="listHeadings">
+            <h3>Title</h3>
+            <h3 class="rightColumn">Priority</h3>
+        </div>
+        {% for list in lists %}
+        <a href="/todo/{{ list.id }}">
+            <div class="listRow">
+                <p>{{ list.name }}</p>
+                <p class="rightColumn">{{ list.priority.name|lower }}</p>
+            </div>
+        </a>
         {% endfor %}
-    </table>
+    </div>
 
     {{ include('warning.html') }}
 

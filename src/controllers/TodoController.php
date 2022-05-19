@@ -14,10 +14,12 @@ class TodoController extends ParentController
 
     public function GETViewLists()
     {
-        $data = R::findAll('lists');
-        if ($data) {
-            $this->viewService->displayPage('view_lists', ['data' => $data]);
-
+        $lists = R::findAll('lists');
+        if ($lists) {
+            foreach ($lists as $key => $listBean) {
+                $listPrios[$key] = strtolower($listBean->priority->name);
+            }
+            $this->viewService->displayPage('view_lists', ['lists' => $lists, 'listPrios' => $listPrios]);
             return;
         }
         (new ErrorController())->GETObjectNotFound();
@@ -85,6 +87,7 @@ class TodoController extends ParentController
         $newTodoList = R::dispense('lists');                
         $newTodoList->name = $newListName;
         $newTodoList->user = (new UserService())->findLoggedInUserBySession();
+        $newTodoList->priority = R::enum('priority:medium');
         R::store($newTodoList);
     }
 
