@@ -1,3 +1,8 @@
+{% extends "index.html" %}
+
+{% block title %}List details{% endblock %}
+
+{% block content %}
 <div class="lists">
 
     <h1>{{ list.name }}</h1>
@@ -20,6 +25,9 @@
         {% endfor %}
         <input type="submit" name="update" value="Update tasks">
     </form>
-    <div class="todoWarning">{% include('warning.html') %}</div>
+
+    {% include('warning.html') %}
+
     <a href="/todo/viewLists">Back to overview</a>
 </div>
+{% endblock %}

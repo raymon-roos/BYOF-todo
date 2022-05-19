@@ -14,6 +14,6 @@ class ParentController extends \service\ProviderService
     {
         $this->viewService = (new \service\ViewService());
         (new \service\ProviderService());
-        // $this->viewService->displayPage('header', []);
+        // $this->viewService->displayPage('index', []);
     }
 }

@@ -14,17 +14,13 @@ class TodoController extends ParentController
 
     public function GETViewLists()
     {
-        $lists = R::findAll('lists');
-        if ($lists) {
-            // foreach ($listCollection as $lists => $list) {
-            //     $data = ['lists' => $list];
-            // }
+        $data = R::findAll('lists');
+        if ($data) {
+            $this->viewService->displayPage('view_lists', $data);
 
-            $this->viewService->displayPage('view_lists', $lists);
-
-            // $this->viewService->twig->render('view_lists.html', [$lists]);
+            // $this->viewService->twig->render('view_lists.html', $data);
             echo '<pre>';
-            var_dump($lists);
+            var_dump($data);
             echo '</pre>';
             
             
@@ -63,14 +59,14 @@ class TodoController extends ParentController
         $this->GETCreateTodo('Missing list name or todo item');
     }
 
-    private function findListById($id)
+    private function findListById(int $id): \RedBeanPHP\OODBBean | false
     {
         $list = R::findOne('lists', 'id = ?', [ $id ]);
 
         return ($list) ?: false;
     }
 
-    private function findList($listName)
+    private function findList(string $listName): \RedBeanPHP\OODBBean | false
     {
         $list = R::findOne('lists', 'name = ?', [ $listName ]);
 
@@ -88,10 +84,9 @@ class TodoController extends ParentController
             }
         }
         var_dump($newData);
-        $_SESSION['errorMessage'] = 'Missing list name or todo item';
     }
 
-    private function addList($newListName)
+    private function addList(string $newListName)
     {
         $newTodoList = R::dispense('lists');                
         $newTodoList->name = $newListName;
@@ -99,7 +94,7 @@ class TodoController extends ParentController
         R::store($newTodoList);
     }
 
-    private function addTodo($formInput)
+    private function addTodo(array $formInput)
     {
         try {
             $newTodo = R::dispense('todos');                

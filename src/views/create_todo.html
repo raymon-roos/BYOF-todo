@@ -1,3 +1,8 @@
+{% extends "index.html" %}
+
+{% block title %}Create todo{% endblock %}
+
+{% block content %}
 <div class="todo">
     <main>
         <h2>To Do:</h2>
@@ -6,17 +11,12 @@
                 <input type="text" placeholder="Name your todo list" name="listName" id="listName">
 
                 <input type="text" placeholder="What needs doing?" name="todo1" id="todo1">
-                <input type="text" placeholder="What needs doing?" name="todo2" id="todo2">
-                <input type="text" placeholder="What needs doing?" name="todo3" id="todo3">
-                <input type="text" placeholder="What needs doing?" name="todo4" id="todo4">
-                <input type="text" placeholder="What needs doing?" name="todo5" id="todo5">
-                <input type="text" placeholder="What needs doing?" name="todo6" id="todo6">
-
                 <input type="submit" value="submit">
             </form>
-            <div class="todoWarning"> {% include('warning.html') %} </div>
         </section>
     </main>
+    {% include("warning.html") %}
     <a href="/todo/viewLists">Back to overview</a>
 </div>
 <!-- <script src="/src/js/add_todo.js"></script> -->
+{% endblock %}

@@ -42,7 +42,7 @@ class RouterController extends ParentController
         }
     }
 
-    private function chooseMethod($url)
+    private function chooseMethod(string $url)
     {
         $method = $_SERVER['REQUEST_METHOD'] . ucfirst($url); 
 
@@ -60,14 +60,14 @@ class RouterController extends ParentController
             is_numeric($url) &&
             method_exists($this->controller, 'selectByID') 
         ) {
-            $this->controller->selectByID($url);
-            exit();
+            $this->controller->selectByID(intval($url));
+            return;
         }
 
         if (method_exists($this->controller, $method)) {
             $this->controller->$method();
-            header("X-Method: $method");
-            exit();
+            // header("X-Method: $method");
+            return;
         }
         
         (new ErrorController())->GETPageUnknown($url); 

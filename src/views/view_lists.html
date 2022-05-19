@@ -1,8 +1,14 @@
+{% extends "index.html" %}
+
+{% block title %} View lists {% endblock %}
+
+{% block content %}
+
 <div class="lists">
     <h2>Lists</h2>
-    <h2>{{ __context }}</h2>
     <table>
-        {% for list in lists %}
+        {{ data }}
+        {% for list in data %}
         <tr>
             <td>{{ list.name }}</td>
             <td> <a href="/todo/{{ list.id }}">View</a></td>
@@ -10,5 +16,9 @@
         {% endfor %}
     </table>
 
+    {{ include('warning.html') }}
+
     <a href="/todo/createTodo">Create a new list</a>
 </div>
+
+{% endblock %}

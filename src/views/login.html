@@ -1,14 +1,20 @@
+{% extends "index.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
 <div class="login">
-    <section class="center">
-        <div class="welcome">
-            <h2>Prepare to chart out your day!</h2>
-        </div>
+    <div class="welcome">
+        <h2>Prepare to chart out your day!</h2>
+    </div>
+    <div class="formContainer">
         <form action="/user/login" method="POST">
             <input type="text" name="username" placeholder="Username" />
             <input type="password" name="password" placeholder="Password" />
             <input type="submit" value="login" name="login" />
             <!-- <p class="errorMessage">{{ warning }}</p> -->
-            {% include('warning.html') %}
         </form>
-    </section>
+        {% include("warning.html") %}
+    </div>
 </div>
+{% endblock %}
