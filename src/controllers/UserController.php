@@ -45,7 +45,7 @@ class UserController extends ParentController
         $this->GETLogin();
     }
 
-    private function verifyLogin($username, $password) 
+    private function verifyLogin(string $username, string $password): \RedBeanPHP\OODBBean | false 
     {
         $user = R::findOne('users', ' username = ?', [ $username ]);
 

@@ -8,28 +8,28 @@ class UserService extends \service\ProviderService
 {
     public $loggedInUser;
 
-    public function validateLoggedIn()
+    public function validateLoggedIn(): \RedBeanPHP\OODBBean | false
     {
         if (!isset($_SESSION['token'])) {
             return false;
         }
 
-        $sessionBean = R::findOne('sessions', ' token = ?', [ $_SESSION['token'] ]);
+        $session = R::findOne('sessions', ' token = ?', [ $_SESSION['token'] ]);
 
-        return ($sessionBean) ?: false;
+        return ($session) ?: false;
     }
 
-    public function findLoggedInUserBySession() 
+    public function findLoggedInUserBySession(): \RedBeanPHP\OODBBean | false
     {
-        $sessionBean = $this->validateLoggedIn();
-        if ($sessionBean) {
-            $userBean = R::findOne('users', 'id=?', [ $sessionBean->user_id ]);
+        $session = $this->validateLoggedIn();
+        if ($session) {
+            $user = R::findOne('users', 'id=?', [ $session->user_id ]);
         }
 
-        return ($userBean) ?: false;
+        return ($user) ?: false;
     }
 
-    public function findUserByUsername($userName)
+    public function findUserByUsername($userName): \RedBeanPHP\OODBBean | false
     {
         $user = R::findOne('users', ' username = ?', [ $userName ]);
 

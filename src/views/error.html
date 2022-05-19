@@ -1,5 +1,12 @@
+{% extends "index.html" %}
+
+{% block title %}Something went wrong {% endblock %}
+
+{% block content %}
 <div class="error">
     <h1>{{ error }}</h1>
 
     <a href="/">Terug naar Home</a>
 </div>
+
+{% endblock %}

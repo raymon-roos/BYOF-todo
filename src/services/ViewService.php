@@ -7,21 +7,23 @@ use Twig\Error\Error as TwigError;
 
 class ViewService
 {
-    public Twig $twig;
+    protected Twig $twig;
 
     public function __construct()
     {
         $this->twig = $this->startTwig();
     }
 
-    public function startTwig() 
+    private function startTwig() 
     {
         try {
             $loader = new \Twig\Loader\FilesystemLoader('./views');
             $twig = new \Twig\Environment($loader);
             return $twig;
-        } catch (TwigError $e) {
-            $this->displayError("Twig failed to initialise " . $e->getMessage());
+        } catch (TwigError $err) {
+            $this->displayError("Twig failed to initialise " . $err->getMessage());
+        } catch (\Exception $exc) {
+            $this->displayError("An error occured, please try again later " . $exc->getMessage());
         }
     }
 
@@ -29,24 +31,20 @@ class ViewService
     {
         try {
             echo $this->twig->render("$view.html", $data);
-        } catch (TwigError $e) {
-            $this->displayError("Twig encountered an error loading this page " . $e->getMessage());
+        } catch (TwigError $err) {
+            $this->displayError("Twig encountered an error loading this page " . $err->getMessage());
+        } catch (\Exception $exc) {
+            $this->displayError("An error occured, please try again later " . $exc->getMessage());
         }
     }
 
     public function displayError(string $error)
     {
-        $this->twig->render(
-            'error.html',
-            [ 'error' => $error ]
-        );
+        $this->twig->render('error.html', [ 'error' => $error ]);
     }
 
     public function displayWarning(string $warning)
     {
-        $this->twig->render(
-            'warning.html',
-            [ 'warning' => $warning ]
-        );
+        $this->twig->render('warning.html', [ 'warning' => $warning ]);
     }
 }
