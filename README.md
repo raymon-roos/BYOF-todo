@@ -6,10 +6,18 @@ mostly to display my newly acquired experience with Object Oriented programming 
 
 ## Assignment: 
 
-> 'Create a to-do tracking website, using the front/backend framework strategies you have
-learned so far.'
+> Create a to-do tracking website, using the front/backend framework strategies you have
+learned so far.
 
-![Assignment screenshot](./extra/screenshot.png)
+Requirements:
+
+- Adding todos (done)
+- Marking todos as 'done' (in progress)
+- Editing todos (in progress)
+- Ordering todos 
+- Todos have to be stored in a database (done)
+- User specific todos (i.e. a login system) (in progress)
+
 
 The goal of the assignment is to familiarise oneself somewhat with the inner workings of a
 web development framework, so that the underlying systems won't seem as alien. This also

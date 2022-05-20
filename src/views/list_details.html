@@ -3,6 +3,37 @@
 {% block title %}List details{% endblock %}
 
 {% block content %}
+
+<div class="lists">
+    <h2>{{ list.name }}</h2>
+    <div class="listDetails">
+        <div class="listHeadings">
+            <h3>Task</h3>
+            <h3 class="rightColumn">Done?</h3>
+        </div>
+        <form action="updateList" method="POST">
+            {% set i = 1 %}
+            {% for todo in todos %}
+            <div class="listRow">
+                <p>{{ todo.task }}</p>
+                {% if todo.done == yes %}
+                <input type="checkbox" name="done{{ i }}" checked>
+                {% else %}
+                <input type="checkbox" name="done{{ i }}" unchecked>
+                {% endif %}
+            </div>
+            {% endfor %}
+            <input type="submit" name="update" value="Update tasks">
+        </form>
+    </div>
+
+    {{ include('warning.html') }}
+
+    <a href="/todo/viewLists">Back to overview</a>
+</div>
+
+
+<!-- 
 <div class="lists">
 
     <h1>{{ list.name }}</h1>
@@ -29,5 +60,5 @@
     {% include('warning.html') %}
 
     <a href="/todo/viewLists">Back to overview</a>
-</div>
+</div> -->
 {% endblock %}
