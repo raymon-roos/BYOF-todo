@@ -1,46 +1,54 @@
 <?php 
 
+declare(strict_types=1);
+
 namespace service;
 
 use RedBeanPHP\R as R;
+use RedBeanPHP\OODBBean as Bean;
 
-class UserService extends \service\ProviderService
+class UserService
 {
     public $loggedInUser;
 
-    public function validateLoggedIn(): \RedBeanPHP\OODBBean | false
+    public static function validateLoggedIn(): Bean | false
     {
-        if (!isset($_SESSION['token'])) {
-            return false;
-        }
+        $session = R::findOne('sessions', ' token = ?', [ $_SESSION['token'] ?? '' ]);
 
-        $session = R::findOne('sessions', ' token = ?', [ $_SESSION['token'] ]);
-
-        return ($session) ?: false;
+        return $session ?? false;
     }
 
-    public function findLoggedInUserBySession(): \RedBeanPHP\OODBBean | false
+    public static function findLoggedInUserBySession(): Bean | false
     {
-        $session = $this->validateLoggedIn();
+        $session = self::validateLoggedIn();
         if ($session) {
             $user = R::findOne('users', 'id=?', [ $session->user_id ]);
         }
 
-        return ($user) ?: false;
+        return $user ?: false;
     }
 
-    public function findUserByUsername($userName): \RedBeanPHP\OODBBean | false
+    public static function findUserByUsername(string $userName): Bean | false
     {
         $user = R::findOne('users', ' username = ?', [ $userName ]);
 
         return ($user) ?: false;
     }
 
-    private function setLoggedInUser()
+    public static function verifyLogin(string $username, string $password): Bean | false
     {
-        $checkUser = $this->findLoggedInUserBySession();
-        if ($checkUser) {
-            $this->loggedInUser = $checkUser;
-        }
+        $user = R::findOne('users', ' username = ?', [ $username ]);
+
+        return ($user && password_verify($password, $user->password)) ? $user : false;
+    }
+
+    public static function setSessionToken(Bean $user): void
+    {
+        $_SESSION['token'] = base64_encode(random_bytes(89));
+
+        $setToken = R::dispense('sessions');
+        $setToken->user = $user;
+        $setToken->token = $_SESSION['token'];  
+        R::store($setToken, true);
     }
 }
