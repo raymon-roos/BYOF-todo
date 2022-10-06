@@ -1,18 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace controller;
 
 use RedBeanPHP\R as R;
+use RedBeanPHP\OODBBean as Bean;
 use service\UserService;
 
 class TodoController extends ParentController
 {
-    public function GETCreateTodo(string $warning = '')
+    public function GETCreateTodo(string $warning = ''): void
     {
         $this->viewService->displayPage('create_todo', ['warning' => $warning]); 
     }
 
-    public function GETViewLists()
+    public function GETViewLists(): void
     {
         $lists = R::findAll('lists');
         if ($lists) {
@@ -25,7 +28,7 @@ class TodoController extends ParentController
         (new ErrorController())->GETObjectNotFound();
     }
 
-    public function selectByID($id)
+    public function selectByID($id): void
     {
         $list = $this->findListById($id);
         $todos = R::findAll('todos', 'list_id = ?', [$id]);
@@ -42,7 +45,7 @@ class TodoController extends ParentController
         (new ErrorController())->GETObjectNotFound();
     }
 
-    public function POSTCreateTodo()
+    public function POSTCreateTodo(): void
     {
         if (!empty($_POST['listName']) && !empty($_POST['todo1'])) {
             if (!$this->findList($_POST['listName'])) {
@@ -55,21 +58,21 @@ class TodoController extends ParentController
         $this->GETCreateTodo('Missing list name or todo item');
     }
 
-    private function findListById(int $id): \RedBeanPHP\OODBBean | false
+    private function findListById(int $id): Bean | false
     {
         $list = R::findOne('lists', 'id = ?', [ $id ]);
 
         return ($list) ?: false;
     }
 
-    private function findList(string $listName): \RedBeanPHP\OODBBean | false
+    private function findList(string $listName): Bean | false
     {
         $list = R::findOne('lists', 'name = ?', [ $listName ]);
 
         return ($list) ?: false;         
     }
 
-    public function POSTUpdateList()
+    public function POSTUpdateList(): void
     {
         var_dump($_POST);
         if (!empty($_POST)) {
@@ -82,7 +85,7 @@ class TodoController extends ParentController
         var_dump($newData);
     }
 
-    private function addList(string $newListName)
+    private function addList(string $newListName): void
     {
         $newTodoList = R::dispense('lists');                
         $newTodoList->name = $newListName;
@@ -91,7 +94,7 @@ class TodoController extends ParentController
         R::store($newTodoList);
     }
 
-    private function addTodo(array $formInput)
+    private function addTodo(array $formInput): void
     {
         try {
             $newTodo = R::dispense('todos');                
