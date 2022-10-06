@@ -1,53 +1,54 @@
 @use "variables";
 
-    // .headings {
-    //     display: flex;
-    //     justify-content: space-evenly;
-    //     width: inherit;
-    // }
-    
-    form {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-        overflow-wrap: normal;
+// .headings {
+//     display: flex;
+//     justify-content: space-evenly;
+//     width: inherit;
+// }
 
-        // .todoRow {
-        //     display: flex;
-        //     align-items: center;
-        //     justify-content: space-evenly;
-        //     margin-bottom: 3px;
-        //     width: inherit;
-        // }
-        .listRow:hover {
-            background-color: variables.$transparentSlate;
-            border-radius: 8px;
-            padding: 0px 4px;
-            box-shadow: 2px 1px 2px 1px variables.$transparentSlate; 
-        }
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  overflow-wrap: normal;
 
-        .listRow:hover p {
-            color: whitesmoke;
-        }
+  // .todoRow {
+  //     display: flex;
+  //     align-items: center;
+  //     justify-content: space-evenly;
+  //     margin-bottom: 3px;
+  //     width: inherit;
+  // }
+  .listRow:hover {
+    background-color: variables.$transparentSlate;
+    border-radius: 8px;
+    padding: 0px 4px;
+    box-shadow: 2px 1px 2px 1px variables.$transparentSlate; 
+  }
 
-        input {
-            border: none;
-            background-color: variables.$dark-blue;
-            border-radius: 14px;
-            text-align: center;
-            color: white;
-            padding: 5px 10px;
-        } 
-        
-        input[type=submit] {
-            margin-top: 8%;
-        }
-        input[type=checkbox] {
-            width: 100%;
-            height: 110%;
-            margin: auto;
-            padding: 0px;
-        }
+  .listRow:hover p {
+    color: whitesmoke;
+  }
 
-    }
+  input {
+    border: none;
+    background-color: variables.$dark-blue;
+    border-radius: 14px;
+    text-align: center;
+    color: white;
+    padding: 5px 10px;
+  } 
+
+  input[type=submit] {
+    margin-top: 8%;
+  }
+
+  input[type=checkbox] {
+    width: 100%;
+    height: 110%;
+    margin: auto;
+    padding: 0px;
+  }
+
+}
