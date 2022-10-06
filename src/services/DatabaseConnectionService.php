@@ -6,16 +6,12 @@ use RedBeanPHP\R as R;
 
 class DatabaseConnectionService
 {
-    public function connectDB()
+    public static function connectDB(): bool | \RedBeanPHP\ToolBox
     {
-        if (!R::testConnection()) {
-            R::setup(
-                'mysql:host=localhost;dbname=todo',
-                'bit_academy',
-                'bit_academy' 
-            );
-            return true;
-        }
-        return false;
+        return R::testConnection() ?: R::setup(
+            'mysql:host=localhost;dbname=todo',
+            'bit_academy',
+            'bit_academy' 
+        );
     }    
 }
