@@ -1,53 +1,34 @@
 <?php
 
+declare(strict_types=1);
+
 namespace controller;
 
 use service\UserService;
-use controller\HomeController;
-use controller\UserController;
-use controller\ErrorController;
 
 class RouterController extends ParentController
 {
-    private object $controller;
-
-    public function __construct()
-    {
-        $this->chooseController();
-    }
-
-    private function chooseController()
+    public function chooseController(): void
     {
         $url = explode("/", $_GET["url"]);
 
-        if (empty($url[0])) {
-            $this->controller = new HomeController();
-            $this->chooseMethod('index');
+        $controllerNameSpaced = 'controller\\' . ucfirst(($url[0]) ?: 'home') . 'Controller';
+
+        if (!class_exists($controllerNameSpaced)) {
+            (new ErrorController())->GETPageUnknown($url[0]);
             return;
         }
 
-        $controllerNameSpaced = 'controller\\' . ucfirst($url[0]) . 'Controller';
-
-        if (!class_exists($controllerNameSpaced)) { 
-            (new ErrorController())->GETPageUnknown($url[0]); 
-            return;
-        }
-
-        $this->controller = new $controllerNameSpaced();
-
-        if (!empty($url[1])) {
-            header("X-Controller: {$controllerNameSpaced}");
-            $this->chooseMethod($url[1]); 
-            return;
-        }
+        header("X-Controller: {$controllerNameSpaced}");
+        $this->chooseMethod(new $controllerNameSpaced(), ($url[1]) ?? 'index');
     }
 
-    private function chooseMethod(string $url)
+    private function chooseMethod(object $controller, string $url): void
     {
-        $method = $_SERVER['REQUEST_METHOD'] . ucfirst($url); 
+        $method = $_SERVER['REQUEST_METHOD'] . ucfirst($url);
 
-        if ($method == 'POSTLogin' && method_exists($this->controller, 'POSTLogin')) {
-            $this->controller->POSTLogin();
+        if ($method == 'POSTLogin' && method_exists($controller, 'POSTLogin')) {
+            $controller->POSTLogin();
             return;
         }
 
@@ -58,19 +39,19 @@ class RouterController extends ParentController
 
         if (
             is_numeric($url) &&
-            method_exists($this->controller, 'selectByID') 
+            method_exists($controller, 'selectByID')
         ) {
-            $this->controller->selectByID(intval($url));
+            $controller->selectByID(intval($url));
             return;
         }
 
-        if (method_exists($this->controller, $method)) {
-            $this->controller->$method();
-            // header("X-Method: $method");
+        if (method_exists($controller, $method)) {
+            $controller->$method();
+            header("X-Method: $method");
             return;
         }
-        
-        (new ErrorController())->GETPageUnknown($url); 
+
+        (new ErrorController())->GETPageUnknown($url);
         exit();
     }
 }
