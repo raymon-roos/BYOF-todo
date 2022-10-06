@@ -8,7 +8,7 @@ use service\UserService;
 
 class RouterController extends ParentController
 {
-    public function chooseController(): void
+    public static function chooseController(): void
     {
         $url = explode("/", $_GET["url"]);
 
@@ -20,10 +20,10 @@ class RouterController extends ParentController
         }
 
         header("X-Controller: {$controllerNameSpaced}");
-        $this->chooseMethod(new $controllerNameSpaced(), ($url[1]) ?? 'index');
+        self::chooseMethod(new $controllerNameSpaced(), ($url[1]) ?? 'index');
     }
 
-    private function chooseMethod(object $controller, string $url): void
+    private static function chooseMethod(object $controller, string $url): void
     {
         $method = $_SERVER['REQUEST_METHOD'] . ucfirst($url);
 
@@ -32,7 +32,7 @@ class RouterController extends ParentController
             return;
         }
 
-        if (!(new UserService())->validateLoggedIn()) {
+        if (!UserService::validateLoggedIn()) {
             (new UserController())->GETLogin();
             return;
         }
@@ -52,6 +52,5 @@ class RouterController extends ParentController
         }
 
         (new ErrorController())->GETPageUnknown($url);
-        exit();
     }
 }
