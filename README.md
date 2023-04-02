@@ -1,5 +1,7 @@
 # Build-your-own-framework: Todo
 
+**This project has been abandoned**
+
 A showcase of a particularly involved school exercise/assignment I have been working on. 
 This is a still a work in progress, and can hardly be called fully featured. It serves
 mostly to display my newly acquired experience with Object-Oriented programming in PHP.

@@ -6,26 +6,27 @@ namespace controller;
 
 use service\UserService;
 
-class RouterController extends ParentController
+final class RouterController extends ParentController
 {
-    public static function chooseController(): void
+    public function chooseController(): void
     {
         $url = explode("/", $_GET["url"]);
 
-        $controllerNameSpaced = 'controller\\' . ucfirst(($url[0]) ?: 'home') . 'Controller';
+        $controllerNamespaced = 'controller\\' . ucfirst(($url[0]) ?: 'home') . 'Controller';
 
-        if (!class_exists($controllerNameSpaced)) {
+        if (!class_exists($controllerNamespaced)) {
             (new ErrorController())->GETPageUnknown($url[0]);
             return;
         }
 
-        header("X-Controller: {$controllerNameSpaced}");
-        self::chooseMethod(new $controllerNameSpaced(), ($url[1]) ?? 'index');
+        header("X-Controller: {$controllerNamespaced}");
+        $this->chooseMethod(new $controllerNamespaced(), ($url[1]) ?? 'index');
     }
 
-    private static function chooseMethod(object $controller, string $url): void
+    private function chooseMethod(object $controller, string $url): void
     {
         $method = $_SERVER['REQUEST_METHOD'] . ucfirst($url);
+
 
         if ($method == 'POSTLogin' && method_exists($controller, 'POSTLogin')) {
             $controller->POSTLogin();
@@ -46,9 +47,13 @@ class RouterController extends ParentController
         }
 
         if (method_exists($controller, $method)) {
-            $controller->$method();
-            header("X-Method: $method");
-            return;
+            try {
+                $controller->$method();
+                header("X-Method: $method");
+                return;
+            } catch (\Throwable) {
+                (new ErrorController())->internalServerError();
+            }
         }
 
         (new ErrorController())->GETPageUnknown($url);

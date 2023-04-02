@@ -1,3 +1,4 @@
+# Change directives under httpd/conf/vhosts instead
 RewriteEngine on
 RewriteCond %{REQUEST_FILENAME} !-f
 # RewriteCond %{REQUEST_FILENAME} !-d

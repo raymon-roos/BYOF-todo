@@ -7,6 +7,11 @@ use service\UserService as UserService;
 
 class UserController extends ParentController
 {
+    public function __construct(
+        private UserService $validator = new UserService()
+    ) {
+    }
+
     public function GETLogin(string $warning = ''): void
     {
         $this->viewService->displayPage('login', ['warning' => $warning]);
@@ -19,14 +24,14 @@ class UserController extends ParentController
             return;
         }
 
-        $userAttemptingLogin = UserService::verifyLogin($_POST['username'], $_POST['password']);
+        $userAttemptingLogin = $this->validator->verifyLogin($_POST['username'], $_POST['password']);
 
         if (!$userAttemptingLogin) {
             $this->GETLogin('Incorrect username or password');
             return;
         }
 
-        UserService::setSessionToken($userAttemptingLogin);
+        $this->validator->setSessionToken($userAttemptingLogin);
         header("location: /todo/viewLists");
     }
 

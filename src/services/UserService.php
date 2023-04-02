@@ -32,7 +32,7 @@ class UserService
     {
         $user = R::findOne('users', ' username = ?', [ $userName ]);
 
-        return ($user) ?: false;
+        return $user ?: false;
     }
 
     public static function verifyLogin(string $username, string $password): Bean | false

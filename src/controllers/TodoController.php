@@ -62,14 +62,14 @@ class TodoController extends ParentController
     {
         $list = R::findOne('lists', 'id = ?', [ $id ]);
 
-        return ($list) ?: false;
+        return $list ?: false;
     }
 
     private function findList(string $listName): Bean | false
     {
         $list = R::findOne('lists', 'name = ?', [ $listName ]);
 
-        return ($list) ?: false;         
+        return $list ?: false;         
     }
 
     public function POSTUpdateList(): void
@@ -103,8 +103,8 @@ class TodoController extends ParentController
             $newTodo->list = R::findOne('lists', 'name = ?', [$formInput['listName']]);
             $newTodo->user = (new UserService())->findLoggedInUserBySession();
             R::store($newTodo);
-        } catch (\RedBeanPHP\RedException $e) {
-            (new ErrorController())->GETDebug($e->getMessage());
+        } catch (\Throwable $t) {
+            $this->viewService->GETDebug($t->getMessage());
         }
     }
 }

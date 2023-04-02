@@ -6,7 +6,7 @@ use RedBeanPHP\R as R;
 
 class DatabaseConnectionService
 {
-    public static function connectDB(): bool | \RedBeanPHP\ToolBox
+    public function connectDB(): bool | \RedBeanPHP\ToolBox
     {
         return R::testConnection() ?: R::setup(
             'mysql:host=localhost;dbname=todo',
